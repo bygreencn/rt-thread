@@ -1,6 +1,6 @@
 #include <rthw.h>
 #include <rtthread.h>
-#include <CMSIS/LPC11xx.h>
+#include <LPC11xx.h>
 
 #define IER_RBR		0x01
 #define IER_THRE	0x02

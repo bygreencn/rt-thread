@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="project_proj.xsd">
 
-  <SchemaVersion>1.0</SchemaVersion>
+  <SchemaVersion>1.1</SchemaVersion>
 
   <Header>### uVision Project, (C) Keil Software</Header>
 
@@ -29,6 +29,7 @@
           <SLE66CMisc></SLE66CMisc>
           <SLE66AMisc></SLE66AMisc>
           <SLE66LinkerMisc></SLE66LinkerMisc>
+          <SFDFile></SFDFile>
           <UseEnv>0</UseEnv>
           <BinPath></BinPath>
           <IncludePath></IncludePath>
@@ -60,6 +61,8 @@
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
+            <nStopU1X>0</nStopU1X>
+            <nStopU2X>0</nStopU2X>
           </BeforeCompile>
           <BeforeMake>
             <RunUserProg1>0</RunUserProg1>
@@ -133,9 +136,10 @@
             <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
             <RestoreFunctions>0</RestoreFunctions>
             <RestoreToolbox>1</RestoreToolbox>
+            <RestoreTracepoints>0</RestoreTracepoints>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
-          <TargetSelection>11</TargetSelection>
+          <TargetSelection>7</TargetSelection>
           <SimDlls>
             <CpuDll></CpuDll>
             <CpuDllArguments></CpuDllArguments>
@@ -149,7 +153,7 @@
             <PeripheralDll></PeripheralDll>
             <PeripheralDllArguments></PeripheralDllArguments>
             <InitializationFile></InitializationFile>
-            <Driver>..\TKScope\UL2ARM_TKSCP_DRV_ARM_for_AGDI.dll</Driver>
+            <Driver>Segger\JL2CM3.dll</Driver>
           </TargetDlls>
         </DebugOption>
         <Utilities>
@@ -157,11 +161,12 @@
             <UseTargetDll>1</UseTargetDll>
             <UseExternalTool>0</UseExternalTool>
             <RunIndependent>0</RunIndependent>
-            <UpdateFlashBeforeDebugging>0</UpdateFlashBeforeDebugging>
+            <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
-            <DriverSelection>4103</DriverSelection>
+            <DriverSelection>4099</DriverSelection>
           </Flash1>
-          <Flash2>..\TKScope\UL2ARM_TKSCP_DRV_ARM_for_AGDI.dll</Flash2>
+          <bUseTDR>1</bUseTDR>
+          <Flash2>Segger\JL2CM3.dll</Flash2>
           <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
         </Utilities>
@@ -341,11 +346,12 @@
             <Rwpi>0</Rwpi>
             <wLevel>0</wLevel>
             <uThumb>0</uThumb>
+            <uSurpInc>0</uSurpInc>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>.;..\..\include;..\..\libcpu\arm\lpc1100</IncludePath>
+              <IncludePath>.;.\startup;..\..\include;..\..\components\CMSIS\Include;.\platform</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -356,6 +362,7 @@
             <SplitLS>0</SplitLS>
             <SwStkChk>0</SwStkChk>
             <NoWarn>0</NoWarn>
+            <uSurpInc>0</uSurpInc>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -386,19 +393,9 @@
           <GroupName>Startup</GroupName>
           <Files>
             <File>
-              <FileName>board.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\board.c</FilePath>
-            </File>
-            <File>
               <FileName>startup.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\startup.c</FilePath>
-            </File>
-            <File>
-              <FileName>application.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\application.c</FilePath>
             </File>
             <File>
               <FileName>rtconfig.h</FileName>
@@ -406,14 +403,9 @@
               <FilePath>.\rtconfig.h</FilePath>
             </File>
             <File>
-              <FileName>board.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\board.h</FilePath>
-            </File>
-            <File>
-              <FileName>uart.c</FileName>
+              <FileName>application.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\uart.c</FilePath>
+              <FilePath>.\application.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -436,6 +428,11 @@
               <FilePath>..\..\src\idle.c</FilePath>
             </File>
             <File>
+              <FileName>ipc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\src\ipc.c</FilePath>
+            </File>
+            <File>
               <FileName>irq.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\src\irq.c</FilePath>
@@ -446,9 +443,24 @@
               <FilePath>..\..\src\kservice.c</FilePath>
             </File>
             <File>
+              <FileName>mem.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\src\mem.c</FilePath>
+            </File>
+            <File>
+              <FileName>memheap.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\src\memheap.c</FilePath>
+            </File>
+            <File>
               <FileName>mempool.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\src\mempool.c</FilePath>
+            </File>
+            <File>
+              <FileName>module.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\src\module.c</FilePath>
             </File>
             <File>
               <FileName>object.c</FileName>
@@ -466,24 +478,14 @@
               <FilePath>..\..\src\slab.c</FilePath>
             </File>
             <File>
-              <FileName>timer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\src\timer.c</FilePath>
-            </File>
-            <File>
               <FileName>thread.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\src\thread.c</FilePath>
             </File>
             <File>
-              <FileName>mem.c</FileName>
+              <FileName>timer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\src\mem.c</FilePath>
-            </File>
-            <File>
-              <FileName>ipc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\src\ipc.c</FilePath>
+              <FilePath>..\..\src\timer.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -491,54 +493,89 @@
           <GroupName>LPC1100</GroupName>
           <Files>
             <File>
-              <FileName>cpu.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\libcpu\arm\lpc1100\cpu.c</FilePath>
+              <FileName>LPC11xx.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\startup\LPC11xx.h</FilePath>
             </File>
             <File>
-              <FileName>fault.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\libcpu\arm\lpc1100\fault.c</FilePath>
+              <FileName>system_LPC11xx.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\startup\system_LPC11xx.h</FilePath>
             </File>
             <File>
-              <FileName>interrupt.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\libcpu\arm\lpc1100\interrupt.c</FilePath>
-            </File>
-            <File>
-              <FileName>stack.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\libcpu\arm\lpc1100\stack.c</FilePath>
-            </File>
-            <File>
-              <FileName>context_rvds.S</FileName>
+              <FileName>startup_LPC11xx.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\..\libcpu\arm\lpc1100\context_rvds.S</FilePath>
-            </File>
-            <File>
-              <FileName>fault_rvds.S</FileName>
-              <FileType>2</FileType>
-              <FilePath>..\..\libcpu\arm\lpc1100\fault_rvds.S</FilePath>
-            </File>
-            <File>
-              <FileName>start_rvds.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>..\..\libcpu\arm\lpc1100\start_rvds.s</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>CMSIS</GroupName>
-          <Files>
-            <File>
-              <FileName>core_cm0.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\libcpu\arm\lpc1100\CMSIS\core_cm0.c</FilePath>
+              <FilePath>.\startup\startup_LPC11xx.s</FilePath>
             </File>
             <File>
               <FileName>system_LPC11xx.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\libcpu\arm\lpc1100\CMSIS\system_LPC11xx.c</FilePath>
+              <FilePath>.\startup\system_LPC11xx.c</FilePath>
+            </File>
+            <File>
+              <FileName>context_rvds.S</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\..\libcpu\arm\cortex-m0\context_rvds.S</FilePath>
+            </File>
+            <File>
+              <FileName>cpuport.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\libcpu\arm\cortex-m0\cpuport.c</FilePath>
+            </File>
+            <File>
+              <FileName>backtrace.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\libcpu\arm\common\backtrace.c</FilePath>
+            </File>
+            <File>
+              <FileName>div0.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\libcpu\arm\common\div0.c</FilePath>
+            </File>
+            <File>
+              <FileName>showmem.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\libcpu\arm\common\showmem.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Platform</GroupName>
+          <Files>
+            <File>
+              <FileName>gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\platform\gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>gpio.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\platform\gpio.h</FilePath>
+            </File>
+            <File>
+              <FileName>type.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\platform\type.h</FilePath>
+            </File>
+            <File>
+              <FileName>uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\platform\uart.c</FilePath>
+            </File>
+            <File>
+              <FileName>uart.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\platform\uart.h</FilePath>
+            </File>
+            <File>
+              <FileName>board.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\platform\board.c</FilePath>
+            </File>
+            <File>
+              <FileName>board.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\platform\board.h</FilePath>
             </File>
           </Files>
         </Group>

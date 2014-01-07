@@ -18,9 +18,9 @@
 #include "board.h"
 #include "uart.h"
 
-#include <CMSIS/LPC11xx.h>
-#include <CMSIS/core_cm0.h>
-#include <CMSIS/system_LPC11xx.h>
+#include <LPC11xx.h>
+#include <core_cm0.h>
+#include <system_LPC11xx.h>
 
 /**
  * @addtogroup LPC1100
