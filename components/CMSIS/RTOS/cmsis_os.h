@@ -1,20 +1,54 @@
-/* ----------------------------------------------------------------------  
- * Copyright (C) 2012 ARM Limited. All rights reserved.  
- *  
- * $Date:        5. March 2012
- * $Revision:    V0.03
- *  
+/* ----------------------------------------------------------------------
+ * $Date:        5. February 2013
+ * $Revision:    V1.02
+ *
  * Project:      CMSIS-RTOS API
- * Title:        cmsis_os.h RT-Thread header file
- *  
+ * Title:        cmsis_os.h template header file
+ *
  * Version 0.02
- *    Initial Proposal Phase 
+ *    Initial Proposal Phase
  * Version 0.03
  *    osKernelStart added, optional feature: main started as thread
- *    osSemaphores have standard behaviour
+ *    osSemaphores have standard behavior
  *    osTimerCreate does not start the timer, added osTimerStart
- *    osThreadPass is renamed to osThreadYield 
- * -------------------------------------------------------------------- */ 
+ *    osThreadPass is renamed to osThreadYield
+ * Version 1.01
+ *    Support for C++ interface
+ *     - const attribute removed from the osXxxxDef_t typedef's
+ *     - const attribute added to the osXxxxDef macros
+ *    Added: osTimerDelete, osMutexDelete, osSemaphoreDelete
+ *    Added: osKernelInitialize
+ * Version 1.02
+ *    Control functions for short timeouts in microsecond resolution:
+ *    Added: osKernelSysTick, osKernelSysTickFrequency, osKernelSysTickMicroSec
+ *    Removed: osSignalGet 
+ *----------------------------------------------------------------------------
+ *
+ * Copyright (c) 2013 ARM LIMITED
+ * All rights reserved.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *  - Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *  - Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *  - Neither the name of ARM  nor the names of its contributors may be used
+ *    to endorse or promote products derived from this software without
+ *    specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL COPYRIGHT HOLDERS AND CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *---------------------------------------------------------------------------*/
 
 /**
 \page cmsis_os_h Header File Template: cmsis_os.h
@@ -35,8 +69,8 @@ The file cmsis_os.h contains:
 All definitions are prefixed with \b os to give an unique name space for CMSIS-RTOS functions.
 Definitions that are prefixed \b os_ are not used in the application code but local to this header file.
 All definitions and functions that belong to a module are grouped and have a common prefix, i.e. \b osThread.
- 
-Definitions that are marked with <b>CAN BE CHANGED</b> can be adapted towards the needs of the actual CMSIS-RTOS implementation. 
+
+Definitions that are marked with <b>CAN BE CHANGED</b> can be adapted towards the needs of the actual CMSIS-RTOS implementation.
 These definitions can be specific to the underlying RTOS kernel.
 
 Definitions that are marked with <b>MUST REMAIN UNCHANGED</b> cannot be altered. Otherwise the CMSIS-RTOS implementation is no longer
@@ -52,7 +86,7 @@ The following CMSIS-RTOS functions can be called from threads and interrupt serv
   - \ref osMessagePut, \ref osMessageGet
   - \ref osMailAlloc, \ref osMailCAlloc, \ref osMailGet, \ref osMailPut, \ref osMailFree
 
-Functions that cannot be called from an ISR are verifying the interrupt status and return in case that they are called 
+Functions that cannot be called from an ISR are verifying the interrupt status and return in case that they are called
 from an ISR context the status code \b osErrorISR. In some implementations this condition might be caught using the HARD FAULT vector.
 
 Some CMSIS-RTOS implementations support CMSIS-RTOS function calls from multiple ISR at the same time.
@@ -62,7 +96,7 @@ If this is impossible, the CMSIS-RTOS rejects calls by nested ISR functions with
 <b>Define and reference object definitions</b>
 
 With <b>\#define osObjectsExternal</b> objects are defined as external symbols. This allows to create a consistent header file
-that is used troughtout a project as shown below:
+that is used throughout a project as shown below:
 
 <i>Header File</i>
 \code
@@ -73,11 +107,11 @@ extern void thread_sample (void const *argument);             // function protot
 osThreadDef (thread_sample, osPriorityBelowNormal, 1, 100);
 
 // Pool definition
-osPoolDef(MyPool, 10, long);                      
+osPoolDef(MyPool, 10, long);
 \endcode
 
 
-This header file defines all objects when included in a C/C++ source file. When <b>\#define osObjectsExternal</b> is 
+This header file defines all objects when included in a C/C++ source file. When <b>\#define osObjectsExternal</b> is
 present before the header file, the objects are defined as external symbols. A single consistent header file can therefore be
 used throughout the whole project.
 
@@ -92,20 +126,20 @@ used throughout the whole project.
 \endcode
 
 */
- 
+
 #ifndef _CMSIS_OS_H
 #define _CMSIS_OS_H
 
 #include <rtthread.h>
 
 /// \note MUST REMAIN UNCHANGED: \b osCMSIS identifies the CMSIS-RTOS API version
-#define osCMSIS           0x00003      ///< API version (main [31:16] .sub [15:0])
+#define osCMSIS           0x10002      ///< API version (main [31:16] .sub [15:0])
 
 /// \note CAN BE CHANGED: \b osCMSIS_KERNEL identifies the underlaying RTOS kernel and version number.
-#define osCMSIS_RTT    0x10001	   ///< RTOS identification and version (main [31:16] .sub [15:0])
+#define osCMSIS_KERNEL    0x10000	   ///< RTOS identification and version (main [31:16] .sub [15:0])
 
 /// \note MUST REMAIN UNCHANGED: \b osKernelSystemId shall be consistent in every CMSIS-RTOS.
-#define osKernelSystemId "RT-Thread V1.1.0"   ///< RTOS identification string
+#define osKernelSystemId "RT-Thread V1.2.0"   ///< RTOS identification string
 
 /// \note MUST REMAIN UNCHANGED: \b osFeature_xxx shall be consistent in every CMSIS-RTOS.
 #define osFeature_MainThread   1       ///< main thread      1=main can be thread, 0=not available
@@ -115,7 +149,8 @@ used throughout the whole project.
 #define osFeature_Signals      8       ///< maximum number of Signal Flags available per thread
 #define osFeature_Semaphore    30      ///< maximum count for SemaphoreInit function
 #define osFeature_Wait         1       ///< osWait function: 1=available, 0=not available
-                                    
+#define osFeature_SysTick      1       ///< osKernelSysTick functions: 1=available, 0=not available
+
 #include <stdint.h>
 #include <stddef.h>
 
